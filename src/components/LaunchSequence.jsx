@@ -2,84 +2,73 @@ import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { profiles } from '../data/profiles';
 
-const MESSAGES_EN = [
-  'Analyzing mission data…',
-  'Identifying your child\'s strongest skills…',
-  'Matching your child with their planet…',
-  'Preparing mission report…',
-];
-const MESSAGES_AR = [
-  'جارٍ تحليل بيانات المهمة…',
-  'تحديد أقوى مهارات ابنك…',
-  'مطابقة ابنك مع كوكبه…',
-  'جارٍ إعداد تقرير المهمة…',
-];
-
 export default function LaunchSequence({ winnerKey, onComplete }) {
   const { isAr } = useLanguage();
-  const [phase,   setPhase]   = useState('analyzing'); // analyzing | flying | landing
-  const [msgIdx,  setMsgIdx]  = useState(0);
-  const messages = isAr ? MESSAGES_AR : MESSAGES_EN;
-  const profile  = profiles[winnerKey] || profiles.creative;
+  const profile = profiles[winnerKey] || profiles.creative;
+
+  const [act,     setAct]     = useState(1);     // 1 | 2 | 3
+  const [count,   setCount]   = useState(3);     // 3 → 2 → 1
+  const [shaking, setShaking] = useState(false);
 
   useEffect(() => {
-    // Cycle through messages
-    const msgTimer = setInterval(() => {
-      setMsgIdx(i => (i + 1 < messages.length ? i + 1 : i));
-    }, 950);
-
-    const t1 = setTimeout(() => setPhase('flying'),   800);
-    const t2 = setTimeout(() => setPhase('landing'), 3000);
-    const t3 = setTimeout(() => onComplete(),        4200);
-
-    return () => {
-      clearInterval(msgTimer);
-      [t1, t2, t3].forEach(clearTimeout);
+    const doShake = () => {
+      setShaking(true);
+      setTimeout(() => setShaking(false), 300);
     };
+
+    // Act 1 — countdown ticks at 0 / 600 / 1200 ms
+    doShake();                                            // count=3, immediate
+
+    const t1 = setTimeout(() => { setCount(2); doShake(); },  600);
+    const t2 = setTimeout(() => { setCount(1); doShake(); }, 1200);
+    const t3 = setTimeout(() => setAct(2),                   1800); // Act 2: rocket
+    const t4 = setTimeout(() => setAct(3),                   3200); // Act 3: planet fill
+    const t5 = setTimeout(() => onComplete(),                4400); // done
+
+    return () => [t1, t2, t3, t4, t5].forEach(clearTimeout);
   }, []);
 
   return (
-    <div className="launch-page" style={{ position: 'relative', zIndex: 10 }}>
+    <div className={`launch-page${shaking ? ' screen-shake' : ''}`}>
 
-      {/* Status text */}
-      <p className="launch-status" style={{ opacity: phase === 'landing' ? 0 : 1 }}>
-        {messages[msgIdx]}
-      </p>
-
-      {/* Rocket flight phase */}
-      {(phase === 'analyzing' || phase === 'flying') && (
-        <div className="launch-rocket-wrap">
-          {phase === 'flying' && (
-            <>
-              <div className="launch-trail" />
-              <div className="launch-rocket">🚀</div>
-            </>
-          )}
-          {phase === 'analyzing' && (
-            <div style={{ fontSize: '3rem', textAlign: 'center', animation: 'rocketBob 1.5s ease-in-out infinite' }}>
-              🚀
-            </div>
-          )}
+      {/* ── Act 1: Countdown ── */}
+      {act === 1 && (
+        <div className="launch-countdown">
+          <div className="launch-count-number" key={count}>
+            {count}
+          </div>
+          <p className="launch-count-label">
+            {isAr ? 'الإقلاع خلال…' : 'Launching in…'}
+          </p>
         </div>
       )}
 
-      {/* Planet landing phase */}
-      {phase === 'landing' && (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
+      {/* ── Act 2: Rocket flight + target planet ── */}
+      {act === 2 && (
+        <div className="launch-flight-wrap">
+          <div className="launch-flight-trail" />
+          <div className={`launch-flight-rocket${isAr ? ' rtl' : ''}`}>🚀</div>
           <div
-            className="launch-planet planet-sphere"
+            className="launch-target-planet"
             style={{
               background: `radial-gradient(circle at 35% 35%, ${profile.lightColor}, ${profile.darkColor})`,
-              boxShadow: `0 0 40px ${profile.glowColor}, 0 0 80px ${profile.glowColor}`,
+              boxShadow: `0 0 28px ${profile.glowColor}, 0 0 60px ${profile.glowColor}`,
             }}
           >
-            <span style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem' }}>
-              {profile.icon}
-            </span>
+            <span className="launch-target-icon">{profile.icon}</span>
           </div>
-          <p style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', fontWeight: 800, color: profile.color }}>
-            {isAr ? profile.planet_ar : profile.planet}
-          </p>
+        </div>
+      )}
+
+      {/* ── Act 3: Planet fills screen ── */}
+      {act === 3 && (
+        <div
+          className="launch-planet-expand"
+          style={{
+            background: `radial-gradient(circle at 40% 40%, ${profile.lightColor}, ${profile.darkColor})`,
+          }}
+        >
+          <span className="launch-planet-icon">{profile.icon}</span>
         </div>
       )}
     </div>
