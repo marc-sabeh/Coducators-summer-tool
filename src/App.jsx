@@ -1,7 +1,8 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useLanguage } from './context/LanguageContext';
-import { calculateScores, getWinningProfile } from './utils/scoring';
+import { calculateScores, getWinningProfile, getTopStrengths } from './utils/scoring';
 import { questions } from './data/questions';
+import { profiles } from './data/profiles';
 import StarField    from './components/StarField';
 import LandingPage  from './components/LandingPage';
 import InfoForm     from './components/InfoForm';
@@ -43,6 +44,31 @@ export default function App() {
   const handleQuizComplete = finalAnswers => {
     setAnswers(finalAnswers);
     setStep('launch');
+
+    // Save lead to Notion in the background — never blocks the user
+    try {
+      const scores      = calculateScores(finalAnswers);
+      const winner      = getWinningProfile(scores, finalAnswers);
+      const profile     = profiles[winner];
+      const strengths   = getTopStrengths(scores);
+
+      fetch('/.netlify/functions/save-result', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          childName:    childInfo.childName,
+          childAge:     childInfo.childAge,
+          parentName:   childInfo.parentName,
+          whatsapp:     '+961' + childInfo.whatsapp,
+          profile:      winner,
+          planet:       profile.planet,
+          topStrengths: strengths.map(k => profiles[k].strengthLabel).join(', '),
+          language:     isAr ? 'AR' : 'EN',
+        }),
+      }).catch(e => console.warn('Notion save skipped:', e));
+    } catch (e) {
+      console.warn('Could not prepare Notion payload:', e);
+    }
   };
 
   const handleRestart = () => {
