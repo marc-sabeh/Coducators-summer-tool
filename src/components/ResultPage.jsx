@@ -71,8 +71,14 @@ export default function ResultPage({ childInfo, answers, onRestart }) {
         <div
           className="result-planet planet-sphere"
           style={{
-            background: `radial-gradient(circle at 35% 35%, ${profile.lightColor}, ${profile.darkColor})`,
-            boxShadow: `0 0 50px ${profile.glowColor}, 0 0 100px ${profile.glowColor}`,
+            '--ring-color': profile.color,
+            '--ring-glow': profile.glowColor,
+            background: `
+              radial-gradient(circle at 30% 30%, rgba(255,255,255,0.22) 0%, transparent 45%),
+              radial-gradient(circle at 70% 65%, rgba(0,0,0,0.52) 0%, transparent 50%),
+              radial-gradient(ellipse at 50% 50%, ${profile.lightColor} 0%, ${profile.darkColor} 58%, rgba(0,0,0,0.86) 100%)
+            `,
+            boxShadow: `0 0 60px ${profile.glowColor}, 0 0 110px ${profile.glowColor}, inset -14px -14px 34px rgba(0,0,0,0.38)`,
           }}
         >
           <div className="result-planet-icon">{profile.icon}</div>

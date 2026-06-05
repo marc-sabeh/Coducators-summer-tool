@@ -1082,8 +1082,8 @@ input, select { font-family: inherit; }
 }
 
 .result-planet {
-  width: 140px;
-  height: 140px;
+  width: 162px;
+  height: 162px;
   border-radius: 50%;
   margin: 0 auto 20px;
   position: relative;
@@ -1095,27 +1095,30 @@ input, select { font-family: inherit; }
   to   { transform: scale(1); opacity: 1; }
 }
 
+/* Thick colored ring using the planet's CSS custom property */
 .result-planet::after {
   content: '';
   position: absolute;
-  inset: -16px;
+  inset: -20px;
   border-radius: 50%;
-  animation: orbitRing 8s linear infinite;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 16px solid var(--ring-color, rgba(255,255,255,0.5));
+  transform: scaleX(2.05) scaleY(0.35);
+  box-shadow: 0 0 24px var(--ring-glow, rgba(255,255,255,0.3)),
+              0 0 8px  var(--ring-color, white);
+  opacity: 0.72;
+  pointer-events: none;
 }
 
-@keyframes orbitRing {
-  from { transform: rotate(0deg) scaleX(1.8) scaleY(0.4); }
-  to   { transform: rotate(360deg) scaleX(1.8) scaleY(0.4); }
-}
-
+/* Icon blended into the planet surface */
 .result-planet-icon {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.8rem;
+  font-size: 3.2rem;
+  mix-blend-mode: overlay;
+  filter: brightness(1.9) drop-shadow(0 0 8px rgba(255,255,255,0.35));
 }
 
 .result-planet-name {
