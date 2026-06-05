@@ -5,16 +5,16 @@ import RocketPath from './RocketPath';
 
 const LETTERS = ['A', 'B', 'C', 'D', 'E'];
 
-// Kid positions: [left%, top%]  — bottom-left → top-right (above the card)
-// 7 positions for Q1 → Q7. Kid starts at position[current].
+// Kid positions: [left%, top%]  — bottom-left → top-right
+// Q1 starts at the bottom, Q7 lands near the planet (fixed top-right)
 const KID_POSITIONS = [
-  [5,  26],   // Q1 — low-left
-  [14, 21],   // Q2
-  [25, 16],   // Q3
-  [36, 12],   // Q4
-  [47,  8],   // Q5
-  [58,  5],   // Q6
-  [67,  2.5], // Q7 — close to planet
+  [4,  70],   // Q1 — bottom-left
+  [16, 58],   // Q2
+  [28, 46],   // Q3
+  [41, 34],   // Q4
+  [54, 22],   // Q5
+  [67, 11],   // Q6
+  [83,  3],   // Q7 — arrives at planet
 ];
 
 export default function QuizPage({ initialAnswers, onComplete, onBack }) {
