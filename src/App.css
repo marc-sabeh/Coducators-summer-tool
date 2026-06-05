@@ -589,121 +589,97 @@ input, select { font-family: inherit; }
 }
 
 /* ============================================================
-   BETWEEN-QUESTION TRANSIT — flying kid animation
+   QUIZ — Persistent kid + planet journey
    ============================================================ */
 
-/* Full-screen overlay */
-.transit-overlay {
+/* Glowing mystery planet — fixed top-right during quiz */
+.quiz-planet {
   position: fixed;
-  inset: 0;
-  z-index: 50;
-  background: #07090f;
-  overflow: hidden;
-  animation: transitFadeIn 0.18s ease both;
-}
-
-@keyframes transitFadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-/* Glowing mystery planet — top right */
-.transit-planet {
-  position: absolute;
-  top: 6%;
-  right: 7%;
-  width: 58px;
-  height: 58px;
+  top: 4%;
+  right: 6%;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 35%, rgba(154,126,240,0.95), rgba(40,20,100,0.98));
-  box-shadow: 0 0 28px rgba(108,79,204,0.85), 0 0 70px rgba(108,79,204,0.3);
-  animation: transitPlanetBreath 0.9s ease-in-out infinite alternate;
+  box-shadow: 0 0 20px rgba(108,79,204,0.8), 0 0 50px rgba(108,79,204,0.25);
+  animation: quizPlanetPulse 2.8s ease-in-out infinite;
+  z-index: 6;
+  pointer-events: none;
 }
 
-@keyframes transitPlanetBreath {
-  from { box-shadow: 0 0 28px rgba(108,79,204,0.85), 0 0 70px rgba(108,79,204,0.3); transform: scale(1); }
-  to   { box-shadow: 0 0 48px rgba(108,79,204,1),    0 0 110px rgba(108,79,204,0.5); transform: scale(1.06); }
+@keyframes quizPlanetPulse {
+  0%,100% { box-shadow: 0 0 20px rgba(108,79,204,0.8), 0 0 50px rgba(108,79,204,0.25); transform: scale(1); }
+  50%      { box-shadow: 0 0 34px rgba(108,79,204,1),   0 0 80px rgba(108,79,204,0.4);  transform: scale(1.06); }
 }
 
-/* Kid + exhaust wrapper — animates from bottom-left toward planet */
-.transit-kid-wrap {
-  position: absolute;
-  bottom: 16%;
-  left: 7%;
+/* Kid astronaut — fixed, slides up across questions */
+.quiz-kid {
+  position: fixed;
+  z-index: 7;
   display: flex;
   flex-direction: column;
   align-items: center;
-  animation: transitKidFly 1.35s cubic-bezier(0.3, 0.6, 0.4, 1) forwards;
+  pointer-events: none;
+  /* smooth position transition during flight */
+  transition: left 1.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              top  1.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.transit-kid-wrap.rtl {
-  left: auto;
-  right: 7%;
-  animation-name: transitKidFlyRtl;
-}
-
-@keyframes transitKidFly {
-  0%   { transform: translate(0,    0)     rotate(-5deg)  scale(1);    opacity: 1; }
-  8%   { transform: translate(4px,  -18px) rotate(-32deg) scale(1.22); opacity: 1; }
-  40%  { transform: translate(24vw, -36vh) rotate(-26deg) scale(1.18); opacity: 1; }
-  78%  { transform: translate(50vw, -54vh) rotate(-22deg) scale(1.12); opacity: 1; }
-  100% { transform: translate(58vw, -60vh) rotate(-16deg) scale(0.9);  opacity: 0; }
-}
-
-@keyframes transitKidFlyRtl {
-  0%   { transform: translate(0,     0)     rotate(5deg)   scale(1);    opacity: 1; }
-  8%   { transform: translate(-4px,  -18px) rotate(32deg)  scale(1.22); opacity: 1; }
-  40%  { transform: translate(-24vw, -36vh) rotate(26deg)  scale(1.18); opacity: 1; }
-  78%  { transform: translate(-50vw, -54vh) rotate(22deg)  scale(1.12); opacity: 1; }
-  100% { transform: translate(-58vw, -60vh) rotate(16deg)  scale(0.9);  opacity: 0; }
-}
-
-/* Kid emoji */
-.transit-kid {
-  font-size: 2.5rem;
+.quiz-kid-emoji {
+  font-size: 2rem;
   line-height: 1;
-  filter: drop-shadow(0 0 14px rgba(255,200,100,0.95));
+  filter: drop-shadow(0 0 10px rgba(255,200,100,0.8));
+  /* idle bob */
+  animation: quizKidBob 2.2s ease-in-out infinite;
+  display: block;
 }
 
-/* Exhaust flame below kid */
-.transit-exhaust {
-  width: 10px;
-  height: 34px;
-  margin-top: -5px;
+@keyframes quizKidBob {
+  0%,100% { transform: translateY(0)   rotate(-4deg); }
+  50%      { transform: translateY(-6px) rotate(4deg); }
+}
+
+/* During flight — tilt & scale up, bob stops */
+.quiz-kid.flying .quiz-kid-emoji {
+  animation: quizKidFlyTilt 1.25s ease-in-out forwards;
+}
+
+@keyframes quizKidFlyTilt {
+  0%   { transform: rotate(-4deg)  scale(1);    filter: drop-shadow(0 0 10px rgba(255,200,100,0.8)); }
+  10%  { transform: rotate(-32deg) scale(1.22); filter: drop-shadow(0 0 22px rgba(255,200,100,1)); }
+  45%  { transform: rotate(-26deg) scale(1.18); filter: drop-shadow(0 0 18px rgba(255,200,100,0.9)); }
+  85%  { transform: rotate(-20deg) scale(1.12); filter: drop-shadow(0 0 14px rgba(255,200,100,0.8)); }
+  100% { transform: rotate(-8deg)  scale(1);    filter: drop-shadow(0 0 10px rgba(255,200,100,0.8)); }
+}
+
+/* Exhaust — only visible during flight */
+.quiz-kid-exhaust {
+  width: 9px;
+  height: 0;
+  overflow: hidden;
+  margin-top: -3px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: hidden;
+  transition: height 0.15s ease;
 }
 
-.transit-flame {
-  width: 9px;
-  height: 34px;
-  background: linear-gradient(180deg, #ffe566, #ff8800, rgba(255,68,0,0.35), transparent);
+.quiz-kid.flying .quiz-kid-exhaust {
+  height: 30px;
+}
+
+.quiz-kid-flame {
+  width: 8px;
+  height: 30px;
+  background: linear-gradient(180deg, #ffe566, #ff8c00, rgba(255,60,0,0.3), transparent);
   border-radius: 50% 50% 50% 50% / 30% 30% 70% 70%;
-  animation: transitFlicker 0.16s ease-in-out infinite alternate;
+  animation: quizFlameFlicker 0.15s ease-in-out infinite alternate;
   transform-origin: top center;
 }
 
-@keyframes transitFlicker {
-  from { transform: scaleX(1)    scaleY(1);   opacity: 1; }
-  to   { transform: scaleX(1.45) scaleY(0.68); opacity: 0.85; }
-}
-
-/* Shooting comets */
-.transit-comet {
-  position: absolute;
-  width: 2px;
-  border-radius: 2px;
-  background: linear-gradient(180deg, transparent, rgba(255,255,255,0.58));
-  opacity: 0;
-  animation: transitComet var(--dur, 0.7s) var(--delay, 0s) linear forwards;
-}
-
-@keyframes transitComet {
-  0%   { opacity: 0;   transform: translateY(-28px); }
-  15%  { opacity: 1; }
-  100% { opacity: 0;   transform: translateY(200px); }
+@keyframes quizFlameFlicker {
+  from { transform: scaleX(1)    scaleY(1);    opacity: 1; }
+  to   { transform: scaleX(1.4)  scaleY(0.65); opacity: 0.82; }
 }
 
 /* QUESTION CARD */
