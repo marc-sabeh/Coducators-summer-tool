@@ -1095,19 +1095,22 @@ input, select { font-family: inherit; }
   to   { transform: scale(1); opacity: 1; }
 }
 
-/* Thick colored ring using the planet's CSS custom property */
+/* Animated ring — restored original orbit, border made visible */
 .result-planet::after {
   content: '';
   position: absolute;
-  inset: -22px;
+  inset: -16px;
   border-radius: 50%;
-  border: 20px solid var(--ring-color, rgba(255,255,255,0.8));
-  transform: scaleX(2.1) scaleY(0.34);
-  box-shadow: 0 0 30px var(--ring-glow, rgba(255,255,255,0.4)),
-              0 0 12px var(--ring-color, white),
-              inset 0 0 8px rgba(0,0,0,0.2);
-  opacity: 0.92;
+  animation: orbitRing 8s linear infinite;
+  border: 12px solid var(--ring-color, rgba(255,255,255,0.6));
+  box-shadow: 0 0 22px var(--ring-glow, rgba(255,255,255,0.35)),
+              0 0 8px  var(--ring-color, rgba(255,255,255,0.5));
   pointer-events: none;
+}
+
+@keyframes orbitRing {
+  from { transform: rotate(0deg)   scaleX(1.8) scaleY(0.4); }
+  to   { transform: rotate(360deg) scaleX(1.8) scaleY(0.4); }
 }
 
 /* Icon blended into the planet surface */
