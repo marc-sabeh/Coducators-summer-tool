@@ -25,8 +25,8 @@ export default function InfoForm({ initialValues, onSubmit, onBack }) {
     if (!v.childAge)          e.childAge   = t('Required', 'مطلوب');
     if (!v.parentName.trim()) e.parentName = t('Required', 'مطلوب');
     if (!v.whatsapp.trim())   e.whatsapp   = t('Required', 'مطلوب');
-    else if (v.whatsapp.replace(/\D/g,'').length < 7)
-                              e.whatsapp   = t('Enter a valid number', 'أدخل رقماً صحيحاً');
+    else if (v.whatsapp.replace(/\D/g,'').length !== 8)
+                              e.whatsapp   = t('Enter exactly 8 digits (e.g. 70123456)', 'أدخل ٨ أرقام بالضبط (مثلاً: ٧٠١٢٣٤٥٦)');
     return e;
   };
 
@@ -112,9 +112,11 @@ export default function InfoForm({ initialValues, onSubmit, onBack }) {
                 <input
                   className={`form-input ${errors.whatsapp ? 'error' : ''}`}
                   type="tel"
-                  placeholder={t('70 123 456', '70 123 456')}
+                  inputMode="numeric"
+                  placeholder={t('70123456', '70123456')}
                   value={v.whatsapp}
-                  onChange={e => set('whatsapp', e.target.value)}
+                  maxLength={8}
+                  onChange={e => set('whatsapp', e.target.value.replace(/[^\d]/g, '').slice(0, 8))}
                   autoComplete="tel"
                 />
               </div>

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useLanguage } from './context/LanguageContext';
 import { calculateScores, getWinningProfile } from './utils/scoring';
 import { questions } from './data/questions';
@@ -31,6 +31,9 @@ export default function App() {
     const scores = calculateScores(answers);
     return getWinningProfile(scores, answers);
   }, [step, answers]);
+
+  // Scroll to top on every page transition
+  useEffect(() => { window.scrollTo(0, 0); }, [step]);
 
   const handleInfoSubmit = info => {
     setChildInfo(info);
