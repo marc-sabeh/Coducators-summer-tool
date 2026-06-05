@@ -1105,9 +1105,9 @@ input, select { font-family: inherit; }
   border: 9px solid var(--ring-color, rgba(255,255,255,0.75));
   box-shadow: 0 0 18px var(--ring-glow, rgba(255,255,255,0.3)),
               0 0 6px  var(--ring-color, rgba(255,255,255,0.5));
-  /* top half fades out = "behind" planet; bottom half stays = "in front" */
-  -webkit-mask-image: linear-gradient(to top, black 40%, transparent 62%);
-  mask-image:         linear-gradient(to top, black 40%, transparent 62%);
+  /* bottom half hidden = planet covers it; top arc peeks out from behind */
+  -webkit-mask-image: linear-gradient(to bottom, black 42%, transparent 64%);
+  mask-image:         linear-gradient(to bottom, black 42%, transparent 64%);
   pointer-events: none;
 }
 
