@@ -5,6 +5,17 @@ import RocketPath from './RocketPath';
 
 const LETTERS = ['A', 'B', 'C', 'D', 'E'];
 
+// One unique message per question answered (indexed by current 0–6)
+const STEP_MESSAGES = [
+  { en: 'Engines on!',          ar: '!المحركات تشتغل',      emoji: '🔥' },
+  { en: 'Leaving atmosphere!',  ar: '!خارج الغلاف الجوي',   emoji: '🌍' },
+  { en: 'Into the stars!',      ar: '!بين النجوم',           emoji: '⭐' },
+  { en: 'Halfway there!',       ar: '!في المنتصف',           emoji: '🌌' },
+  { en: 'Deep space!',          ar: '!الفضاء العميق',        emoji: '💫' },
+  { en: 'Almost there!',        ar: '!اقتربنا',              emoji: '🌟' },
+  { en: 'Final approach!',      ar: '!الاقتراب الأخير',      emoji: '🪐' },
+];
+
 // Kid positions: [left%, top%]  — bottom-left → top-right
 // Q1 starts at the bottom, Q7 lands near the planet (fixed top-right)
 const KID_POSITIONS = [
@@ -84,10 +95,9 @@ export default function QuizPage({ initialAnswers, onComplete, onBack }) {
 
   const [lp, tp] = KID_POSITIONS[kidStep];
 
-  // Progress label shown while kid is flying
-  const pct    = Math.round((current + 1) / total * 100);
-  const msgEn  = pct <= 28 ? 'Just launched!' : pct <= 57 ? 'Halfway there!' : pct <= 85 ? 'Almost there!' : 'Final approach!';
-  const msgAr  = pct <= 28 ? '!انطلاق'        : pct <= 57 ? '!في المنتصف'    : pct <= 85 ? '!اقتربنا'       : '!الاقتراب الأخير';
+  // Big progress overlay shown while kid is flying
+  const pct  = Math.round((current + 1) / total * 100);
+  const step = STEP_MESSAGES[Math.min(current, STEP_MESSAGES.length - 1)];
 
   return (
     <div className="quiz-page" style={{ position: 'relative', zIndex: 10 }}>
@@ -108,13 +118,16 @@ export default function QuizPage({ initialAnswers, onComplete, onBack }) {
         <div className="quiz-kid-exhaust">
           <div className="quiz-kid-flame" />
         </div>
-
-        {/* Progress label — floats beside the kid during flight */}
-        <div className="quiz-kid-label">
-          <span className="quiz-kid-label-msg">{isAr ? msgAr : msgEn}</span>
-          <span className="quiz-kid-label-pct">{num(pct)}%</span>
-        </div>
       </div>
+
+      {/* Big centered progress text — only visible while kid is flying */}
+      {advancing && (
+        <div className="quiz-progress-overlay" key={current}>
+          <span className="quiz-progress-emoji">{step.emoji}</span>
+          <span className="quiz-progress-msg">{isAr ? step.ar : step.en}</span>
+          <span className="quiz-progress-pct">{num(pct)}%</span>
+        </div>
+      )}
 
       {/* Progress path */}
       <RocketPath current={current} total={total} />

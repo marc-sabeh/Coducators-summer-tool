@@ -78,27 +78,27 @@ export default function LandingPage({ onStart }) {
 
         {/* Headlines */}
         <h1 className="landing-headline">
-          {t('Every kid has a rocket.', 'كل ولد عنده صاروخ.')}
+          {t('Your child has a tech superpower.', 'عند ابنك قوة تقنية خارقة.')}
         </h1>
         <p className="landing-sub">
-          {t("Let's find out which planet they're headed to.", 'خلّينا نكتشف شو كوكبو.')}
+          {t("Let's find out what it is.", 'خلّينا نكتشف شو هي.')}
         </p>
         <p className="landing-body-text">
           {t(
-            `Answer 7 quick questions and discover your child's unique tech learning profile — then book a free trial at ${PROGRAM_NAME}.`,
-            `جاوب على ٧ أسئلة واكتشف البروفايل التقني الخاص بابنك — وبعدين احجز جلسة تجريبية مجانية في ${PROGRAM_NAME}.`
+            `7 quick questions to discover how your child thinks, builds, and creates — then claim a free trial at ${PROGRAM_NAME}.`,
+            `٧ أسئلة سريعة لتكتشف كيف يفكر ابنك ويبني ويبدع — وبعدين احجز جلسة تجريبية مجانية في ${PROGRAM_NAME}.`
           )}
         </p>
 
         {/* CTA */}
         <button className="btn btn-launch" onClick={onStart}>
-          {t('Start the Mission →', 'ابدأ المهمة ←')}
+          {t('Find Their Superpower →', 'اكتشف قوته ←')}
         </button>
 
         {/* 5 real colored planets with profile icons */}
         <div className="planets-teaser-wrap">
           <p className="planets-teaser-hint">
-            {t('5 planets. Only one is yours.', '٥ كواكب. واحد منهم كوكبك.')}
+            {t('5 worlds. Which one is theirs?', '٥ عوالم. أيّها ينتمي إليه؟')}
           </p>
           <div className="planets-teaser-row">
             {PROFILE_ORDER.map((key, i) => {
