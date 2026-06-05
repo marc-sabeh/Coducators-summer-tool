@@ -1081,12 +1081,12 @@ input, select { font-family: inherit; }
   overflow: hidden;
 }
 
-.result-planet {
+/* Wrapper — handles centering and entry animation */
+.result-planet-wrap {
+  position: relative;
   width: 162px;
   height: 162px;
-  border-radius: 50%;
   margin: 0 auto 20px;
-  position: relative;
   animation: resultPlanetIn 0.7s cubic-bezier(0.34,1.56,0.64,1) both;
 }
 
@@ -1095,8 +1095,24 @@ input, select { font-family: inherit; }
   to   { transform: scale(1); opacity: 1; }
 }
 
-/* Animated ring — top half masked out so it appears to go behind the planet */
-.result-planet::after {
+.result-planet {
+  width: 162px;
+  height: 162px;
+  border-radius: 50%;
+  position: relative;
+}
+
+/* Ring div — placed before planet in DOM so it sits behind it */
+.result-planet-ring {
+  position: absolute;
+  width: 162px;
+  height: 162px;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.result-planet-ring::after {
   content: '';
   position: absolute;
   inset: -16px;
@@ -1105,10 +1121,6 @@ input, select { font-family: inherit; }
   border: 9px solid var(--ring-color, rgba(255,255,255,0.75));
   box-shadow: 0 0 18px var(--ring-glow, rgba(255,255,255,0.3)),
               0 0 6px  var(--ring-color, rgba(255,255,255,0.5));
-  /* bottom half hidden = planet covers it; top arc peeks out from behind */
-  -webkit-mask-image: linear-gradient(to bottom, black 42%, transparent 64%);
-  mask-image:         linear-gradient(to bottom, black 42%, transparent 64%);
-  pointer-events: none;
 }
 
 @keyframes orbitRing {

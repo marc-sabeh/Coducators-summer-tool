@@ -68,20 +68,26 @@ export default function ResultPage({ childInfo, answers, onRestart }) {
         </p>
 
         {/* Planet */}
-        <div
-          className="result-planet planet-sphere"
-          style={{
+        <div className="result-planet-wrap">
+          {/* Ring — first in DOM so it renders behind the planet */}
+          <div className="result-planet-ring" style={{
             '--ring-color': profile.color,
-            '--ring-glow': profile.glowColor,
-            background: `
-              radial-gradient(circle at 30% 30%, rgba(255,255,255,0.22) 0%, transparent 45%),
-              radial-gradient(circle at 70% 65%, rgba(0,0,0,0.52) 0%, transparent 50%),
-              radial-gradient(ellipse at 50% 50%, ${profile.lightColor} 0%, ${profile.darkColor} 58%, rgba(0,0,0,0.86) 100%)
-            `,
-            boxShadow: `0 0 60px ${profile.glowColor}, 0 0 110px ${profile.glowColor}, inset -14px -14px 34px rgba(0,0,0,0.38)`,
-          }}
-        >
-          <div className="result-planet-icon">{profile.icon}</div>
+            '--ring-glow':  profile.glowColor,
+          }} />
+          {/* Planet sphere — after ring in DOM so it renders on top */}
+          <div
+            className="result-planet planet-sphere"
+            style={{
+              background: `
+                radial-gradient(circle at 30% 30%, rgba(255,255,255,0.22) 0%, transparent 45%),
+                radial-gradient(circle at 70% 65%, rgba(0,0,0,0.52) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, ${profile.lightColor} 0%, ${profile.darkColor} 58%, rgba(0,0,0,0.86) 100%)
+              `,
+              boxShadow: `0 0 60px ${profile.glowColor}, 0 0 110px ${profile.glowColor}, inset -14px -14px 34px rgba(0,0,0,0.38)`,
+            }}
+          >
+            <div className="result-planet-icon">{profile.icon}</div>
+          </div>
         </div>
 
         <h1 className="result-planet-name" style={{ marginTop: 20 }}>
