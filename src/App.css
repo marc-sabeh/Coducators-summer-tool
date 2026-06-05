@@ -1095,16 +1095,19 @@ input, select { font-family: inherit; }
   to   { transform: scale(1); opacity: 1; }
 }
 
-/* Animated ring — restored original orbit, border made visible */
+/* Animated ring — top half masked out so it appears to go behind the planet */
 .result-planet::after {
   content: '';
   position: absolute;
   inset: -16px;
   border-radius: 50%;
-  animation: orbitRing 8s linear infinite;
-  border: 12px solid var(--ring-color, rgba(255,255,255,0.6));
-  box-shadow: 0 0 22px var(--ring-glow, rgba(255,255,255,0.35)),
-              0 0 8px  var(--ring-color, rgba(255,255,255,0.5));
+  animation: orbitRing 20s linear infinite;
+  border: 9px solid var(--ring-color, rgba(255,255,255,0.75));
+  box-shadow: 0 0 18px var(--ring-glow, rgba(255,255,255,0.3)),
+              0 0 6px  var(--ring-color, rgba(255,255,255,0.5));
+  /* top half fades out = "behind" planet; bottom half stays = "in front" */
+  -webkit-mask-image: linear-gradient(to top, black 40%, transparent 62%);
+  mask-image:         linear-gradient(to top, black 40%, transparent 62%);
   pointer-events: none;
 }
 
