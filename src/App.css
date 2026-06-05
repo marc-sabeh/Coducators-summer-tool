@@ -239,209 +239,162 @@ input, select { font-family: inherit; }
   font-size: 0.95rem;
   color: var(--text-secondary);
   line-height: 1.65;
-  margin-bottom: 32px;
-  max-width: 380px;
+  margin-bottom: 28px;
+  max-width: 360px;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* ── Rocket Hero ── */
-.rocket-hero {
+/* ── Hero Rocket ── */
+.hero-rocket-wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 4px auto 24px;
-  position: relative;
-  width: 180px;
+  margin: 0 auto 20px;
+  width: 160px;
 }
 
-.rocket-scene {
+.hero-rocket-scene {
   display: flex;
   flex-direction: column;
   align-items: center;
-  animation: heroRocketBob 2.4s ease-in-out infinite;
+  animation: heroRocketBob 2.6s ease-in-out infinite;
   position: relative;
 }
 
 @keyframes heroRocketBob {
   0%, 100% { transform: translateY(0px); }
-  50%       { transform: translateY(-10px); }
+  50%       { transform: translateY(-12px); }
 }
 
-.rocket-kid {
-  font-size: 2.4rem;
-  line-height: 1;
+.hero-astronaut {
+  font-size: 2rem;
   position: relative;
-  z-index: 2;
-  margin-bottom: -8px;
+  z-index: 3;
+  margin-bottom: -10px;
   filter: drop-shadow(0 0 8px rgba(255,200,100,0.5));
 }
 
-.rocket-body {
-  font-size: 4.2rem;
-  line-height: 1;
+.hero-rocket-svg {
+  filter: drop-shadow(0 0 20px rgba(53,134,199,0.6));
   position: relative;
   z-index: 2;
-  transform: rotate(0deg);
-  filter: drop-shadow(0 0 16px rgba(53,134,199,0.7));
 }
 
-.rocket-flame {
+/* Flames */
+.hero-flame-wrap {
   display: flex;
   justify-content: center;
-  gap: 4px;
-  margin-top: -6px;
+  gap: 3px;
+  margin-top: -8px;
   position: relative;
   z-index: 1;
 }
 
-.flame {
+.hero-flame {
   border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-  animation: flicker 0.3s ease-in-out infinite alternate;
+  animation: flicker 0.25s ease-in-out infinite alternate;
 }
 
-.flame-1 {
-  width: 12px;
-  height: 22px;
+.hero-flame-l {
+  width: 14px; height: 26px;
   background: linear-gradient(180deg, #fff7a0, #ff9500, transparent);
   animation-delay: 0s;
 }
-.flame-2 {
-  width: 18px;
-  height: 32px;
+.hero-flame-c {
+  width: 20px; height: 38px;
   background: linear-gradient(180deg, #ffffff, #ffcc00, #ff6600, transparent);
-  animation-delay: 0.1s;
+  animation-delay: 0.08s;
 }
-.flame-3 {
-  width: 12px;
-  height: 22px;
+.hero-flame-r {
+  width: 14px; height: 26px;
   background: linear-gradient(180deg, #fff7a0, #ff9500, transparent);
-  animation-delay: 0.05s;
+  animation-delay: 0.04s;
 }
 
 @keyframes flicker {
-  0%   { transform: scaleY(1)   scaleX(1);   opacity: 0.9; }
-  100% { transform: scaleY(0.8) scaleX(1.1); opacity: 1;   }
+  0%   { transform: scaleY(1) scaleX(1); opacity: 0.9; }
+  100% { transform: scaleY(0.75) scaleX(1.15); opacity: 1; }
 }
 
 /* Launchpad */
-.launchpad {
+.hero-launchpad {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 140px;
+  width: 120px;
 }
 
-.launchpad-top {
-  width: 90px;
-  height: 10px;
+.hero-pad-top {
+  width: 80px; height: 10px;
   background: linear-gradient(90deg, #1a2040, #2a3560, #1a2040);
   border-radius: 4px 4px 0 0;
-  box-shadow: 0 0 16px rgba(53,134,199,0.4), 0 0 32px rgba(53,134,199,0.15);
-  border: 1px solid rgba(53,134,199,0.3);
+  box-shadow: 0 0 16px rgba(53,134,199,0.5), 0 0 32px rgba(53,134,199,0.2);
+  border: 1px solid rgba(53,134,199,0.35);
   border-bottom: none;
 }
 
-.launchpad-legs {
+.hero-pad-legs {
   display: flex;
   justify-content: space-between;
-  width: 80px;
+  width: 70px;
 }
 
-.launchpad-leg {
-  width: 6px;
-  height: 16px;
+.hero-pad-leg {
+  width: 7px; height: 16px;
   background: linear-gradient(180deg, #2a3560, #1a2040);
   border-radius: 0 0 3px 3px;
   border: 1px solid rgba(53,134,199,0.2);
   border-top: none;
 }
 
-/* Mystery planets */
-.mystery-planets-wrap {
-  margin-top: 28px;
+/* ── 5 Planets teaser ── */
+.planets-teaser-wrap {
+  margin-top: 32px;
   margin-bottom: 4px;
 }
 
-.mystery-hint {
+.planets-teaser-hint {
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-muted);
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
-.mystery-planets {
-  display: flex;
-  justify-content: center;
-  gap: 14px;
-}
-
-.mystery-planet-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-}
-
-.mystery-planet {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #1e2340, #0d1020);
-  border: 1px solid rgba(255,255,255,0.07);
-  animation: mysteryPulse 3s ease-in-out infinite;
-  animation-delay: var(--delay, 0s);
-}
-
-@keyframes mysteryPulse {
-  0%, 100% { box-shadow: 0 0 8px var(--planet-glow, rgba(100,100,200,0.2)); opacity: 0.5; }
-  50%       { box-shadow: 0 0 18px var(--planet-glow, rgba(100,100,200,0.4)); opacity: 0.7; }
-}
-
-.mystery-label {
-  font-size: 0.65rem;
-  font-weight: 800;
-  color: var(--text-muted);
-  letter-spacing: 0.08em;
-}
-
-/* Legacy planet teaser — kept for compatibility */
-.planet-teaser {
+.planets-teaser-row {
   display: flex;
   justify-content: center;
   gap: 16px;
-  flex-wrap: wrap;
-  margin-top: 32px;
-  margin-bottom: 8px;
 }
 
 .planet-teaser-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  animation: planetPulse 3s ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
 }
 
-.planet-mini {
-  width: 42px;
-  height: 42px;
+.planet-teaser-ball {
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
-  animation: planetGlow 3s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
-@keyframes planetGlow {
-  0%, 100% { box-shadow: 0 0 12px var(--glow); }
-  50%       { box-shadow: 0 0 24px var(--glow), 0 0 48px var(--glow); }
+.planet-teaser-icon {
+  font-size: 1.5rem;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
 }
 
-.planet-teaser-label {
-  font-size: 0.68rem;
-  color: var(--text-muted);
-  font-weight: 600;
-  text-align: center;
-  max-width: 60px;
+@keyframes planetPulse {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-5px); }
 }
 
 /* ============================================================
