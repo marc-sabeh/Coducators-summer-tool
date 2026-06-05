@@ -1121,6 +1121,7 @@ input, select { font-family: inherit; }
   border: 9px solid var(--ring-color, rgba(255,255,255,0.75));
   box-shadow: 0 0 18px var(--ring-glow, rgba(255,255,255,0.3)),
               0 0 6px  var(--ring-color, rgba(255,255,255,0.5));
+  opacity: 0.45;
 }
 
 @keyframes orbitRing {
