@@ -107,8 +107,11 @@ export default function QuizPage({ initialAnswers, onComplete, onBack }) {
       {/* Progress path */}
       <RocketPath current={current} total={total} />
 
-      {/* Question body */}
-      <div className="quiz-body">
+      {/* Question body — hides while kid is flying between questions */}
+      <div
+        className="quiz-body"
+        style={{ opacity: advancing ? 0 : 1, pointerEvents: advancing ? 'none' : 'auto' }}
+      >
         <div className="card question-card" key={current}>
           <p className="question-num">
             {t(`Question ${current + 1} of ${total}`, `سؤال ${num(current + 1)} من ${num(total)}`)}
