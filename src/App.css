@@ -620,9 +620,10 @@ input, select { font-family: inherit; }
   flex-direction: column;
   align-items: center;
   pointer-events: none;
-  /* smooth position transition during flight */
+  /* smooth position + fade transition */
   transition: left 1.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-              top  1.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+              top  1.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              opacity 0.22s ease;
 }
 
 .quiz-kid-emoji {

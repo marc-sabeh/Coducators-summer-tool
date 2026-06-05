@@ -90,12 +90,13 @@ export default function QuizPage({ initialAnswers, onComplete, onBack }) {
       {/* Planet — fixed top-right, always visible */}
       <div className="quiz-planet" />
 
-      {/* Kid astronaut — moves up toward planet each question */}
+      {/* Kid astronaut — only visible while flying between questions */}
       <div
         className={`quiz-kid ${flying ? 'flying' : ''}`}
         style={{
-          left: lp + '%',
-          top:  tp + '%',
+          left:    lp + '%',
+          top:     tp + '%',
+          opacity: advancing ? 1 : 0,
         }}
       >
         <span className="quiz-kid-emoji">🧑‍🚀</span>
