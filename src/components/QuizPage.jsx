@@ -84,6 +84,11 @@ export default function QuizPage({ initialAnswers, onComplete, onBack }) {
 
   const [lp, tp] = KID_POSITIONS[kidStep];
 
+  // Progress label shown while kid is flying
+  const pct    = Math.round((current + 1) / total * 100);
+  const msgEn  = pct <= 28 ? 'Just launched!' : pct <= 57 ? 'Halfway there!' : pct <= 85 ? 'Almost there!' : 'Final approach!';
+  const msgAr  = pct <= 28 ? '!انطلاق'        : pct <= 57 ? '!في المنتصف'    : pct <= 85 ? '!اقتربنا'       : '!الاقتراب الأخير';
+
   return (
     <div className="quiz-page" style={{ position: 'relative', zIndex: 10 }}>
 
@@ -102,6 +107,12 @@ export default function QuizPage({ initialAnswers, onComplete, onBack }) {
         <span className="quiz-kid-emoji">🧑‍🚀</span>
         <div className="quiz-kid-exhaust">
           <div className="quiz-kid-flame" />
+        </div>
+
+        {/* Progress label — floats beside the kid during flight */}
+        <div className="quiz-kid-label">
+          <span className="quiz-kid-label-msg">{isAr ? msgAr : msgEn}</span>
+          <span className="quiz-kid-label-pct">{num(pct)}%</span>
         </div>
       </div>
 
