@@ -1074,3 +1074,39 @@ input, select { font-family: inherit; }
   padding: 16px;
   line-height: 1.55;
 }
+
+/* ============================================================
+   RESULT — Personal headline
+   ============================================================ */
+.result-personal-headline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin: 14px 0 6px;
+  animation: fadeUp 0.5s ease 0.3s both;
+}
+
+.result-personal-name {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 6vw, 2.4rem);
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.4);
+}
+
+.result-personal-sep {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.55);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.result-personal-planet {
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 4vw, 1.4rem);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}

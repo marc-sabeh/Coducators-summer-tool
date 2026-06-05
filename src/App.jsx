@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useLanguage } from './context/LanguageContext';
 import { calculateScores, getWinningProfile } from './utils/scoring';
+import { questions } from './data/questions';
 import StarField    from './components/StarField';
 import LandingPage  from './components/LandingPage';
 import InfoForm     from './components/InfoForm';
@@ -22,7 +23,7 @@ export default function App() {
   const { isAr } = useLanguage();
   const [step, setStep]           = useState('landing');
   const [childInfo, setChildInfo] = useState({ childName:'', childAge:'', parentName:'', whatsapp:'' });
-  const [answers, setAnswers]     = useState(Array(7).fill(null));
+  const [answers, setAnswers]     = useState(Array(questions.length).fill(null));
 
   // Pre-calculate winner for LaunchSequence planet reveal
   const winnerKey = useMemo(() => {
@@ -42,7 +43,7 @@ export default function App() {
   };
 
   const handleRestart = () => {
-    setAnswers(Array(7).fill(null));
+    setAnswers(Array(questions.length).fill(null));
     setChildInfo({ childName:'', childAge:'', parentName:'', whatsapp:'' });
     setStep('landing');
   };

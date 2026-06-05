@@ -81,12 +81,20 @@ export default function ResultPage({ childInfo, answers, onRestart }) {
         <h1 className="result-planet-name" style={{ marginTop: 20 }}>
           {isAr ? profile.planet_ar : profile.planet}
         </h1>
-        <p className="result-tagline">{isAr ? profile.tagline_ar : profile.tagline}</p>
+
         {childInfo.childName && (
-          <p className="result-child-label" style={{ marginTop: 8 }}>
-            {t(`${childInfo.childName}'s Mission Report`, `تقرير مهمة ${childInfo.childName}`)}
-          </p>
+          <div className="result-personal-headline">
+            <span className="result-personal-name">{childInfo.childName}</span>
+            <span className="result-personal-sep">
+              {t('is headed to', 'متجه نحو')}
+            </span>
+            <span className="result-personal-planet" style={{ color: profile.color }}>
+              {isAr ? profile.planet_ar : profile.planet} {profile.icon}
+            </span>
+          </div>
         )}
+
+        <p className="result-tagline">{isAr ? profile.tagline_ar : profile.tagline}</p>
       </div>
 
       {/* BODY */}
