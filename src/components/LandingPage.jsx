@@ -78,27 +78,28 @@ export default function LandingPage({ onStart }) {
 
         {/* Headlines */}
         <h1 className="landing-headline">
-          {t('Your child has a tech superpower.', 'عند ابنك قوة تقنية خارقة.')}
+          {t('Your child has a tech superpower.', 'عند ابنك قوة تقنية خارقة.', 'Ton enfant a un super-pouvoir tech.')}
         </h1>
         <p className="landing-sub">
-          {t("Let's find out what it is.", 'خلّينا نكتشف شو هي.')}
+          {t("Let's find out what it is.", 'خلّينا نكتشف شو هي.', 'Découvrons lequel.')}
         </p>
         <p className="landing-body-text">
           {t(
             `7 quick questions to discover how your child thinks, builds, and creates — then claim a free trial at ${PROGRAM_NAME}.`,
-            `٧ أسئلة سريعة لتكتشف كيف يفكر ابنك ويبني ويبدع — وبعدين احجز جلسة تجريبية مجانية في ${PROGRAM_NAME}.`
+            `٧ أسئلة سريعة لتكتشف كيف يفكر ابنك ويبني ويبدع — وبعدين احجز جلسة تجريبية مجانية في ${PROGRAM_NAME}.`,
+            `7 questions rapides pour découvrir comment ton enfant pense, construit et crée — puis réserve un essai gratuit au ${PROGRAM_NAME}.`
           )}
         </p>
 
         {/* CTA */}
         <button className="btn btn-launch" onClick={onStart}>
-          {t('Find Their Superpower →', 'اكتشف قوته ←')}
+          {t('Find Their Superpower →', 'اكتشف قوته ←', 'Découvrir son super-pouvoir →')}
         </button>
 
         {/* 5 real colored planets with profile icons */}
         <div className="planets-teaser-wrap">
           <p className="planets-teaser-hint">
-            {t('5 worlds. Which one is theirs?', '٥ عوالم. أيّها ينتمي إليه؟')}
+            {t('5 worlds. Which one is theirs?', '٥ عوالم. أيّها ينتمي إليه؟', '5 mondes. Lequel est le sien ?')}
           </p>
           <div className="planets-teaser-row">
             {PROFILE_ORDER.map((key, i) => {
@@ -123,7 +124,8 @@ export default function LandingPage({ onStart }) {
         <p className="disclaimer" style={{ marginTop: 20 }}>
           {t(
             "A fun assessment to explore your child's tech learning style. Not a clinical evaluation.",
-            'تقييم ممتع لاستكشاف أسلوب تعلم ابنك التقني. مش تقييم سريري.'
+            'تقييم ممتع لاستكشاف أسلوب تعلم ابنك التقني. مش تقييم سريري.',
+            "Une évaluation ludique pour explorer le style d'apprentissage tech de ton enfant. Pas une évaluation clinique."
           )}
         </p>
 

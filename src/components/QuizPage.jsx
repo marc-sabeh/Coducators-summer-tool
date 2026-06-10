@@ -7,13 +7,13 @@ const LETTERS = ['A', 'B', 'C', 'D', 'E'];
 
 // One unique message per question answered (indexed by current 0–6)
 const STEP_MESSAGES = [
-  { en: 'Engines on!',          ar: '!المحركات تشتغل',      emoji: '🔥' },
-  { en: 'Leaving atmosphere!',  ar: '!خارج الغلاف الجوي',   emoji: '🌍' },
-  { en: 'Into the stars!',      ar: '!بين النجوم',           emoji: '⭐' },
-  { en: 'Halfway there!',       ar: '!في المنتصف',           emoji: '🌌' },
-  { en: 'Deep space!',          ar: '!الفضاء العميق',        emoji: '💫' },
-  { en: 'Almost there!',        ar: '!اقتربنا',              emoji: '🌟' },
-  { en: 'Final approach!',      ar: '!الاقتراب الأخير',      emoji: '🪐' },
+  { en: 'Engines on!',          ar: '!المحركات تشتغل',      fr: 'Moteurs allumés !',       emoji: '🔥' },
+  { en: 'Leaving atmosphere!',  ar: '!خارج الغلاف الجوي',   fr: 'On quitte l\'atmosphère !', emoji: '🌍' },
+  { en: 'Into the stars!',      ar: '!بين النجوم',           fr: 'Dans les étoiles !',      emoji: '⭐' },
+  { en: 'Halfway there!',       ar: '!في المنتصف',           fr: 'À mi-chemin !',           emoji: '🌌' },
+  { en: 'Deep space!',          ar: '!الفضاء العميق',        fr: 'Espace profond !',        emoji: '💫' },
+  { en: 'Almost there!',        ar: '!اقتربنا',              fr: 'Presque là !',            emoji: '🌟' },
+  { en: 'Final approach!',      ar: '!الاقتراب الأخير',      fr: 'Approche finale !',       emoji: '🪐' },
 ];
 
 // Kid positions: [left%, top%]  — bottom-left → top-right
@@ -29,7 +29,7 @@ const KID_POSITIONS = [
 ];
 
 export default function QuizPage({ initialAnswers, onComplete, onBack }) {
-  const { t, num, isAr } = useLanguage();
+  const { t, num, isAr, isFr, lang } = useLanguage();
   const total = questions.length;
 
   const [answers, setAnswers]   = useState(initialAnswers || Array(total).fill(null));
@@ -124,7 +124,7 @@ export default function QuizPage({ initialAnswers, onComplete, onBack }) {
       {advancing && (
         <div className="quiz-progress-overlay" key={current}>
           <span className="quiz-progress-emoji">{step.emoji}</span>
-          <span className="quiz-progress-msg">{isAr ? step.ar : step.en}</span>
+          <span className="quiz-progress-msg">{lang === 'ar' ? step.ar : lang === 'fr' ? step.fr : step.en}</span>
           <span className="quiz-progress-pct">{num(pct)}%</span>
         </div>
       )}
@@ -139,10 +139,10 @@ export default function QuizPage({ initialAnswers, onComplete, onBack }) {
       >
         <div className="card question-card" key={current}>
           <p className="question-num">
-            {t(`Question ${current + 1} of ${total}`, `سؤال ${num(current + 1)} من ${num(total)}`)}
+            {t(`Question ${current + 1} of ${total}`, `سؤال ${num(current + 1)} من ${num(total)}`, `Question ${current + 1} sur ${total}`)}
           </p>
           <p className="question-text">
-            {isAr ? q.text_ar : q.text_en}
+            {lang === 'ar' ? q.text_ar : lang === 'fr' ? q.text_fr : q.text_en}
           </p>
 
           <div className="answers-list">
@@ -156,7 +156,7 @@ export default function QuizPage({ initialAnswers, onComplete, onBack }) {
                   disabled={advancing}
                 >
                   <span className="answer-letter">{LETTERS[idx]}</span>
-                  <span>{isAr ? ans.text_ar : ans.text_en}</span>
+                  <span>{lang === 'ar' ? ans.text_ar : lang === 'fr' ? ans.text_fr : ans.text_en}</span>
                 </button>
               );
             })}
@@ -164,12 +164,12 @@ export default function QuizPage({ initialAnswers, onComplete, onBack }) {
         </div>
 
         <p className="camp-msg">
-          🪐 {isAr ? q.campMessage_ar : q.campMessage_en}
+          🪐 {lang === 'ar' ? q.campMessage_ar : lang === 'fr' ? q.campMessage_fr : q.campMessage_en}
         </p>
 
         <div style={{ textAlign: 'center', marginTop: 8 }}>
           <button className="btn-ghost" onClick={handleBack}>
-            {t('← Back', '→ رجوع')}
+            {t('← Back', '→ رجوع', '← Retour')}
           </button>
         </div>
       </div>

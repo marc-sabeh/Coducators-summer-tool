@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { useLanguage } from './context/LanguageContext';
 import { calculateScores, getWinningProfile, getTopStrengths } from './utils/scoring';
 import { questions } from './data/questions';
@@ -11,17 +11,23 @@ import LaunchSequence from './components/LaunchSequence';
 import ResultPage   from './components/ResultPage';
 
 function LangToggle() {
-  const { lang, toggleLang } = useLanguage();
+  const { lang, setLang } = useLanguage();
   return (
     <div className="lang-toggle">
-      <button className={`lang-btn ${lang === 'en' ? 'active' : ''}`} onClick={() => lang !== 'en' && toggleLang()}>EN</button>
-      <button className={`lang-btn ${lang === 'ar' ? 'active' : ''}`} onClick={() => lang !== 'ar' && toggleLang()}>AR</button>
+      <button className={`lang-btn ${lang === 'en' ? 'active' : ''}`} onClick={() => setLang('en')}>EN</button>
+      <button className={`lang-btn ${lang === 'fr' ? 'active' : ''}`} onClick={() => setLang('fr')}>FR</button>
+      <button className={`lang-btn ${lang === 'ar' ? 'active' : ''}`} onClick={() => setLang('ar')}>AR</button>
     </div>
   );
 }
 
+// Step order — used to know if a navigation is forward or backward
+const STEP_ORDER = ['landing', 'info', 'quiz', 'launch', 'result'];
+// Where the phone back button should go from each step
+const PREV_STEP = { info: 'landing', quiz: 'info', launch: null, result: 'landing' };
+
 export default function App() {
-  const { isAr } = useLanguage();
+  const { isAr, lang } = useLanguage();
   const [step, setStep]           = useState('landing');
   const [childInfo, setChildInfo] = useState({ childName:'', childAge:'', parentName:'', whatsapp:'' });
   const [answers, setAnswers]     = useState(Array(questions.length).fill(null));
@@ -36,14 +42,55 @@ export default function App() {
   // Scroll to top on every page transition
   useEffect(() => { window.scrollTo(0, 0); }, [step]);
 
+  // ── History API — fixes phone back button ─────────────────────
+  // Stamp the initial history entry on first load
+  useEffect(() => {
+    window.history.replaceState({ appStep: 'landing' }, '');
+  }, []);
+
+  // Forward navigation: push a new entry so the phone back button
+  // can pop back to it rather than exiting the app
+  const goToStep = useCallback((newStep) => {
+    window.history.pushState({ appStep: newStep }, '');
+    setStep(newStep);
+  }, []);
+
+  // Intercept the phone back button
+  useEffect(() => {
+    const handlePop = () => {
+      // Block back navigation during the launch animation
+      if (step === 'launch') {
+        window.history.pushState({ appStep: 'launch' }, '');
+        return;
+      }
+
+      const dest = PREV_STEP[step];
+      if (dest === 'landing') {
+        // Full reset when returning to landing
+        setAnswers(Array(questions.length).fill(null));
+        setChildInfo({ childName:'', childAge:'', parentName:'', whatsapp:'' });
+        window.history.replaceState({ appStep: 'landing' }, '');
+        setStep('landing');
+      } else if (dest) {
+        // Push so user can keep pressing back
+        window.history.pushState({ appStep: dest }, '');
+        setStep(dest);
+      }
+    };
+
+    window.addEventListener('popstate', handlePop);
+    return () => window.removeEventListener('popstate', handlePop);
+  }, [step]);
+  // ──────────────────────────────────────────────────────────────
+
   const handleInfoSubmit = info => {
     setChildInfo(info);
-    setStep('quiz');
+    goToStep('quiz');
   };
 
   const handleQuizComplete = finalAnswers => {
     setAnswers(finalAnswers);
-    setStep('launch');
+    goToStep('launch');
 
     // Save lead to Notion in the background — never blocks the user
     try {
@@ -63,7 +110,7 @@ export default function App() {
           profile:      winner,
           planet:       profile.planet,
           topStrengths: strengths.map(k => profiles[k].strengthLabel).join(', '),
-          language:     isAr ? 'AR' : 'EN',
+          language:     lang.toUpperCase(),
         }),
       }).catch(e => console.warn('Notion save skipped:', e));
     } catch (e) {
@@ -74,6 +121,7 @@ export default function App() {
   const handleRestart = () => {
     setAnswers(Array(questions.length).fill(null));
     setChildInfo({ childName:'', childAge:'', parentName:'', whatsapp:'' });
+    window.history.replaceState({ appStep: 'landing' }, '');
     setStep('landing');
   };
 
@@ -95,10 +143,10 @@ export default function App() {
         </svg>
       </a>
 
-      {step === 'landing' && <LandingPage key="landing" onStart={() => setStep('info')} />}
-      {step === 'info'    && <InfoForm    key="info"    initialValues={childInfo} onSubmit={handleInfoSubmit} onBack={() => setStep('landing')} />}
-      {step === 'quiz'    && <QuizPage   key="quiz"    initialAnswers={answers} onComplete={handleQuizComplete} onBack={() => setStep('info')} />}
-      {step === 'launch'  && <LaunchSequence key="launch" winnerKey={winnerKey} onComplete={() => setStep('result')} />}
+      {step === 'landing' && <LandingPage key="landing" onStart={() => goToStep('info')} />}
+      {step === 'info'    && <InfoForm    key="info"    initialValues={childInfo} onSubmit={handleInfoSubmit} onBack={() => window.history.back()} />}
+      {step === 'quiz'    && <QuizPage   key="quiz"    initialAnswers={answers} onComplete={handleQuizComplete} onBack={() => window.history.back()} />}
+      {step === 'launch'  && <LaunchSequence key="launch" winnerKey={winnerKey} onComplete={() => goToStep('result')} />}
       {step === 'result'  && <ResultPage key="result"  childInfo={childInfo} answers={answers} onRestart={handleRestart} />}
     </div>
   );

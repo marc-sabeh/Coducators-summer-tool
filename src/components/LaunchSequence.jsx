@@ -3,7 +3,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { profiles } from '../data/profiles';
 
 export default function LaunchSequence({ winnerKey, onComplete }) {
-  const { isAr } = useLanguage();
+  const { isAr, lang } = useLanguage();
   const profile = profiles[winnerKey] || profiles.creative;
 
   const [act,     setAct]     = useState(1);     // 1 | 2 | 3
@@ -38,7 +38,7 @@ export default function LaunchSequence({ winnerKey, onComplete }) {
             {count}
           </div>
           <p className="launch-count-label">
-            {isAr ? 'الإقلاع خلال…' : 'Launching in…'}
+            {lang === 'ar' ? 'الإقلاع خلال…' : lang === 'fr' ? 'Lancement dans…' : 'Launching in…'}
           </p>
         </div>
       )}

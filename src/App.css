@@ -94,13 +94,14 @@ input, select { font-family: inherit; }
 }
 
 .lang-btn {
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  padding: 5px 12px;
+  padding: 5px 9px;
   border-radius: 100px;
   color: var(--text-secondary);
   transition: all 0.2s;
   font-family: 'Nunito', 'Tajawal', sans-serif;
+  letter-spacing: 0.03em;
 }
 .lang-btn.active {
   background: var(--brand-blue);
